@@ -48,7 +48,7 @@ Using Gradle:
   ```
 compile 'io.behindthemath.justifiedtextview:justifiedtextview:x.y.z'
   ```
-*x.y.z* is the latest version available - see the top of README.
+where *x.y.z* is the latest version available (see the tag at the top of this README).
 
 ## License
 
