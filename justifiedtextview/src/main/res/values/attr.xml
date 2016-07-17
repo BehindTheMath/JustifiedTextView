@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="JustifiedTextView">
+        <attr name="android:text"/>
+        <attr name="android:textSize"/>
+        <attr name="android:textColor"/>
+        <attr name="android:lineSpacingMultiplier"/>
+        <attr name="android:lineSpacingExtra"/>
+        <attr name="forceLastLineJustification" format="boolean"/>
+        <attr name="minimumWordSpacing" format="float"/>
+        <attr name="minimumWordSpacingBaseCharacter" format="string"/>
+        <attr name="minimumWordSpacingBasePercentage" format="float"/>
+    </declare-styleable>
+
+</resources>

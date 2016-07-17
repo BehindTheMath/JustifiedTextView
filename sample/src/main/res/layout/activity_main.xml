@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView:"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textColor="?android:textColorSecondary"
+        android:text="@string/sample_text"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="JustifiedTextView from XML:"/>
+
+    <io.behindthemath.justifiedtextview.JustifiedTextView
+        android:id="@+id/jtv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/sample_text"
+        android:textSize="14sp"
+        android:lineSpacingMultiplier="1.0"
+        android:lineSpacingExtra="0sp"
+        custom:minimumWordSpacing="0.0"
+        custom:minimumWordSpacingBaseCharacter="n"
+        custom:forceLastLineJustification="false"
+        custom:minimumWordSpacingBasePercentage="0.8"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="JustifiedTextView from code:"/>
+
+</LinearLayout>
