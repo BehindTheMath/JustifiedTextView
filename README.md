@@ -23,7 +23,7 @@ XML usage:
     custom:minimumWordSpacingBasePercentage="0.8"/>
 ```
 
-Code usage
+Code usage:
 ```
 String sample_text = getResources().getString(R.string.sample_text);
 
@@ -41,12 +41,14 @@ justifiedTextView.setBackgroundColor(Color.LTGRAY);
 
 ## Installation
 Using Gradle:
-1. Make sure the `repositories` block in your project's `build.gradle` includes `jcenter()` (This is now the default in Android Studio).
+
+1. Make sure the `repositories` block in your project's `build.gradle` includes `jcenter()` (This is now the default in Android Studio).  
 2. Add the following line to the `dependencies` block in your app module's `build.gradle`:
-```
+
+  ```
 compile 'io.behindthemath.justifiedtextview:justifiedtextview:x.y.z'
-```
-x.y.z is the latest version available - see the top of README.
+  ```
+*x.y.z* is the latest version available - see the top of README.
 
 ## License
 
