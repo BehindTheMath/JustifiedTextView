@@ -1,45 +1,32 @@
 [ ![Download](https://api.bintray.com/packages/behindthemath/maven/justifiedtextview/images/download.svg) ](https://bintray.com/behindthemath/maven/justifiedtextview/_latestVersion)
 
 # JustifiedTextView
+
 JustifiedTextView is a custom view that displays text with full justification. This is as opposed to the standard `TextView`, which only allows right- or left-justification (depending on the *gravity* attribute).
 
 <img src="http://i.imgur.com/Jatiyjn.png" width="60%" />
 
 ## Usage
+
 XML usage:
 ```
 <io.behindthemath.justifiedtextview.JustifiedTextView
-    android:id="@+id/jtv"
+    android:id="@+id/justifiedTextView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:text="@string/sample_text"
-    android:textSize="14sp"
-    android:lineSpacingMultiplier="1.0"
-    android:lineSpacingExtra="0sp"
-    custom:minimumWordSpacing="0.0"
-    custom:minimumWordSpacingBaseCharacter="n"
-    custom:forceLastLineJustification="false"
-    custom:minimumWordSpacingBasePercentage="0.8"/>
+    android:text="@string/sample_text"/>
 ```
 
 Code usage:
 ```
 String sample_text = getResources().getString(R.string.sample_text);
-
 JustifiedTextView justifiedTextView = new JustifiedTextView(this, sample_text);
-justifiedTextView.setTextColor(0x8A0000FF);
-justifiedTextView.setTextSizeDimen("12sp");
-justifiedTextView.setForceLastLineJustification(true);
-justifiedTextView.setLineSpacingExtraDimen("4dp");
-justifiedTextView.setLineSpacingMultiplier(1.5f);
-justifiedTextView.setMinimumWordSpacing("n");
-justifiedTextView.setBackgroundColor(Color.LTGRAY);
-
 ((LinearLayout) findViewById(R.id.linearLayout)).addView(justifiedTextView);
 ```
+For more documentation, see the [Wiki](/wiki).
 
 ## Installation
+
 Using Gradle:
 
 1. Make sure the `repositories` block in your project's `build.gradle` includes `jcenter()` (This is now the default in Android Studio).  
