@@ -23,7 +23,7 @@ String sample_text = getResources().getString(R.string.sample_text);
 JustifiedTextView justifiedTextView = new JustifiedTextView(this, sample_text);
 ((LinearLayout) findViewById(R.id.linearLayout)).addView(justifiedTextView);
 ```
-For more documentation, see the [Wiki](/wiki).
+For more documentation, see the [Wiki](/../../wiki).
 
 ## Installation
 
