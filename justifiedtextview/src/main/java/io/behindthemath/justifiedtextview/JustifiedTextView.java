@@ -132,9 +132,6 @@ public class JustifiedTextView extends View {
      */
     private int mPaddingTop;
 
-    //private int mPaddingRight, mPaddingBottom;
-    //private float mWidth, mHeight;
-
     /**
      * Bare minimum constructor to use when creating the view from code.
      * After calling the constructor, use the setters to set the attributes.
@@ -281,9 +278,12 @@ public class JustifiedTextView extends View {
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
         float wordWidth, totalWordWidth, proposedLineWidth;
         float proposedWordSpacing = 0, currentWordSpacing = 0;
         int proposedNumSpacesNeeded;
+        float height;
 
         /*
          * Get the padding values from the parent View.
@@ -296,8 +296,7 @@ public class JustifiedTextView extends View {
         /*
          * Calculate the width of the view. The height will be calculated later.
          */
-        int minWidth = mPaddingLeft + rightPadding + getSuggestedMinimumWidth();
-        float width = resolveSizeAndState(minWidth, widthMeasureSpec, 1);
+        float width = resolveSizeAndState(getSuggestedMinimumWidth(), widthMeasureSpec, 1);
 
         mLinesList.clear();
         /*
@@ -400,10 +399,21 @@ public class JustifiedTextView extends View {
         }
 
         /*
-         * Once all the lines are calculated, calculate the size of the view.
-         * (If the required height is bigger than the maximum height, part of the view will be cut off).
+         * Once all the lines are calculated, calculate the required size of the view.
          */
-        setMeasuredDimension((int) width, (int) (mLinesList.size() * mLineHeight + mPaddingTop + bottomPadding));
+        height = (mLinesList.size() * mLineHeight + mPaddingTop + bottomPadding);
+        /*
+         * If the required height is less than the minimum height, expand it.
+         */
+        if (Float.compare(height, getSuggestedMinimumHeight()) > 0){ height = getSuggestedMinimumHeight(); }
+        /*
+         * If the required height is bigger than the maximum height, part of the view will be cut off.
+         */
+        int intHeight = resolveSizeAndState((int) height, heightMeasureSpec, 1);
+        /*
+         * Set the height and width.
+         */
+        setMeasuredDimension((int) width, intHeight);
     }
 
     /**
@@ -578,7 +588,6 @@ public class JustifiedTextView extends View {
         } else {
             throw new IllegalArgumentException("textSizeDimen cannot be null.");
         }
-
     }
 
     /**
