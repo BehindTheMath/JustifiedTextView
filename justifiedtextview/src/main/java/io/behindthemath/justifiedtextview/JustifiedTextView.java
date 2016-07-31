@@ -46,12 +46,6 @@ public class JustifiedTextView extends View {
     private float mTextSize = 0;
 
     /**
-     * Holds the string representation of the text size, as a dimension value.
-     * Default value is "14.0sp".
-     */
-    private String mTextSizeDimen = "14.0sp";
-
-    /**
      * A color value for the text. Default value is BLACK (0xFFFFFFFF).
      */
     @ColorInt
@@ -70,11 +64,6 @@ public class JustifiedTextView extends View {
      * Default value is 0.
      */
     private float mLineSpacingExtra = 0;
-
-    /**
-     * Holds the string representation of the extra vertical space to add between lines, as a dimension value.
-     */
-    private String mLineSpacingExtraDimen = null;
 
     /**
      * Line height in pixels, including spacing above.
@@ -218,14 +207,10 @@ public class JustifiedTextView extends View {
          */
         float defaultTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14f, context.getResources().getDisplayMetrics());
         mTextSize = typedArray.getDimension(R.styleable.JustifiedTextView_android_textSize, defaultTextSize);
-        mTextSizeDimen = typedArray.getString(R.styleable.JustifiedTextView_android_textSize);
-        if (mTextSizeDimen == null) { mTextSizeDimen = "14sp"; }
         mTextColor = typedArray.getColor(R.styleable.JustifiedTextView_android_textColor, defaultTextColor);
 
         mLineSpacingMultiplier = typedArray.getFloat(R.styleable.JustifiedTextView_android_lineSpacingMultiplier, 1.3f);
         mLineSpacingExtra = typedArray.getDimension(R.styleable.JustifiedTextView_android_lineSpacingExtra, 0);
-        mLineSpacingExtraDimen = typedArray.getString(R.styleable.JustifiedTextView_android_lineSpacingExtra);
-        if (mLineSpacingExtraDimen == null) { mLineSpacingExtraDimen = "0sp"; }
         mForceLastLineJustification = typedArray.getBoolean(R.styleable.JustifiedTextView_forceLastLineJustification, false);
 
         /*
@@ -558,6 +543,15 @@ public class JustifiedTextView extends View {
     }
 
     /**
+     * Returns the text size, as a dimension string, in SP.
+     *
+     * @return The text size, as a dimension string, in SP.
+     */
+    public String getTextSizeDimen() {
+        return Float.toString(DimensionConverter.pixelsToDimension(mTextSize, TypedValue.COMPLEX_UNIT_SP, getContext().getResources().getDisplayMetrics())).concat("sp");
+    }
+
+    /**
      * Sets the text size, in pixels.
      *
      * @param textSize The text size, in pixels.
@@ -567,23 +561,12 @@ public class JustifiedTextView extends View {
     public void setTextSize(@FloatRange(from = 0, fromInclusive = false) float textSize) {
         if (textSize > 0) {
             mTextSize = textSize;
-            mTextSizeDimen = null;
             mLineHeight = mTextSize * mLineSpacingMultiplier + mLineSpacingExtra;
             mTextPaint.setTextSize(mTextSize);
             invalidate();
         } else {
             throw new IllegalArgumentException("textSize must be more than 0.");
         }
-    }
-
-    /**
-     * Returns the text size, as a dimension.
-     * This will return a zero-length string if the line spacing was last set with setTextSize().
-     *
-     * @return The text size, as a dimension string.
-     */
-    public String getTextSizeDimen() {
-        return mTextSizeDimen;
     }
 
     /**
@@ -595,7 +578,6 @@ public class JustifiedTextView extends View {
      */
     public void setTextSizeDimen(@NonNull @Size(min = 1) String textSizeDimen) {
         if (textSizeDimen != null) {
-            mTextSizeDimen = textSizeDimen;
             setTextSize(DimensionConverter.stringToDimension(textSizeDimen, getContext().getResources().getDisplayMetrics()));
         } else {
             throw new IllegalArgumentException("textSizeDimen cannot be null.");
@@ -621,7 +603,6 @@ public class JustifiedTextView extends View {
     public void setLineSpacingExtra(@FloatRange(from = 0) float lineSpacingExtra) {
         if (lineSpacingExtra >= 0) {
             mLineSpacingExtra = lineSpacingExtra;
-            mLineSpacingExtraDimen = null;
             mLineHeight = mTextSize * mLineSpacingMultiplier + mLineSpacingExtra;
             invalidate();
         } else {
@@ -630,13 +611,12 @@ public class JustifiedTextView extends View {
     }
 
     /**
-     * Returns the extra line spacing added after the base line spacing is calculated, as a dimension.
-     * This will return a zero-length string if the line spacing was last set with setLineSpacingExtra().
+     * Returns the extra line spacing added after the base line spacing is calculated, as a dimension string.
      *
      * @return The extra line spacing, as a dimension string.
      */
     public String getLineSpacingExtraDimen() {
-        return mLineSpacingExtraDimen;
+        return Float.toString(DimensionConverter.pixelsToDimension(mLineSpacingExtra, TypedValue.COMPLEX_UNIT_SP, getContext().getResources().getDisplayMetrics())).concat("sp");
     }
 
     /**
@@ -648,7 +628,6 @@ public class JustifiedTextView extends View {
      */
     public void setLineSpacingExtraDimen(@NonNull @Size(min = 1) String lineSpacingExtraDimen) {
         if (lineSpacingExtraDimen != null) {
-            mLineSpacingExtraDimen = lineSpacingExtraDimen;
             setLineSpacingExtra(DimensionConverter.stringToDimension(lineSpacingExtraDimen, getContext().getResources().getDisplayMetrics()));
         } else {
             throw new IllegalArgumentException("lineSpacingExtraDimen cannot be null.");
