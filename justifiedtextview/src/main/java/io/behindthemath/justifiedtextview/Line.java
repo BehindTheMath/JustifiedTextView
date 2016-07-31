@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.text.TextPaint;
 
 import java.util.ArrayList;
-import java.util.IllegalFormatException;
 
 /**
  * An object that represents 1 line after the word spacing and words per line have been calculated.
