@@ -389,7 +389,7 @@ public class JustifiedTextView extends View {
         /*
          * If the required height is less than the minimum height, expand it.
          */
-        if (Float.compare(height, getSuggestedMinimumHeight()) > 0){ height = getSuggestedMinimumHeight(); }
+        if (Float.compare(height, getSuggestedMinimumHeight()) < 0){ height = getSuggestedMinimumHeight(); }
         /*
          * If the required height is bigger than the maximum height, part of the view will be cut off.
          */
