@@ -46,11 +46,16 @@ captures/
 
 # Intellij
 *.iml
-.idea/workspace.xml
-.idea/libraries
+.idea/
 
 # Keystore files
 *.jks
 
 ### Android Patch ###
 gen-external-apklibs
+
+# Tests
+justifiedtextview/src/androidTest/java/io/behindthemath/justifiedtextview/ApplicationTest.java
+justifiedtextview/src/test/java/io/behindthemath/justifiedtextview/ExampleUnitTest.java
+sample/src/androidTest/java/io/behindthemath/justifiedtextview/ApplicationTest.java
+sample/src/test/java/io/behindthemath/justifiedtextview/ExampleUnitTest.java
