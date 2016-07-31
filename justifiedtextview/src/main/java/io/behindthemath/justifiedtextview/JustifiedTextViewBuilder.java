@@ -282,7 +282,7 @@ public class JustifiedTextViewBuilder {
      * Performs some additional validation.
      */
     private void validate(){
-        if (mText != null && mTextResId != 0){
+        if (!mText.equals("") && mTextResId != 0){
             throw new IllegalArgumentException("setText(String) and SetText(int) cannot be used together.");
         }
 
