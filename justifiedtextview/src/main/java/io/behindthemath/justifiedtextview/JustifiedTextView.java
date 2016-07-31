@@ -476,6 +476,18 @@ public class JustifiedTextView extends View {
     }
 
     /**
+     * Creates a new {@link JustifiedTextViewBuilder} object to use the Builder pattern to set up the view's properties.
+     *
+     * @param context The Context the view is running in, through which it can
+     *        access the current theme, resources, etc.
+     *
+     * @return A new {@link JustifiedTextViewBuilder} object
+     */
+    public static JustifiedTextViewBuilder with(Context context){
+        return new JustifiedTextViewBuilder(context);
+    }
+
+    /**
      * Returns the text that the view is displaying.
      *
      * @return The text that the view is displaying.
@@ -713,7 +725,7 @@ public class JustifiedTextView extends View {
      *
      * @throws IllegalArgumentException If {@code minimumWordSpacingBaseCharacter} is null, or if {@code minimumWordSpacingBasePercentage} is not between 0 and 1.0.
      */
-    public void setMinimumWordSpacing(@NonNull @Size(1) String minimumWordSpacingBaseCharacter, @FloatRange(from = 0, to = 1f) float minimumWordSpacingBasePercentage) {
+    public void setMinimumWordSpacing(@NonNull @Size(1) String minimumWordSpacingBaseCharacter, @FloatRange(from = 0, to = 1f, fromInclusive = false) float minimumWordSpacingBasePercentage) {
         if (minimumWordSpacingBaseCharacter != null && minimumWordSpacingBasePercentage >= 0 && minimumWordSpacingBasePercentage <= 1f) {
             mMinimumWordSpacingBaseCharacter = minimumWordSpacingBaseCharacter;
             mMinimumWordSpacingBasePercentage = minimumWordSpacingBasePercentage != 0 ? minimumWordSpacingBasePercentage : DEFAULT_WORD_SPACING_BASE_PERCENTAGE;
