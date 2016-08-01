@@ -460,18 +460,6 @@ public class JustifiedTextView extends View {
     }
 
     /**
-     * Creates a new {@link JustifiedTextViewBuilder} object to use the Builder pattern to set up the view's properties.
-     *
-     * @param context The Context the view is running in, through which it can
-     *        access the current theme, resources, etc.
-     *
-     * @return A new {@link JustifiedTextViewBuilder} object
-     */
-    public static JustifiedTextViewBuilder with(Context context){
-        return new JustifiedTextViewBuilder(context);
-    }
-
-    /**
      * Returns the text that the view is displaying.
      *
      * @return The text that the view is displaying.
