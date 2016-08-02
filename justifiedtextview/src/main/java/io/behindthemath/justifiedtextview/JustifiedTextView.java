@@ -541,6 +541,24 @@ public class JustifiedTextView extends View {
     }
 
     /**
+     * Returns the text size as a complex value, based on {@code type}.
+     *
+     * @param type The {@link TypedValue} complex type to return.
+     *
+     * @return The text size as a complex value, based on {@code type}
+     *
+     * @throws IllegalArgumentException If {@code type} is not one of the {@link TypedValue} complex types, or if {@code textSize} is less than 0.
+     */
+    public float getTextSize(@IntRange(from = 0, to = 5) int type) {
+        if (type < 0 || type > 5) {
+            throw new IllegalArgumentException("type must be one of the TypedValue complex types.");
+        } else {
+            return TypedValue.applyDimension(type, getTextSize(), getContext().getResources().getDisplayMetrics());
+        }
+
+    }
+
+    /**
      * Sets the text size, in pixels.
      *
      * @param textSize The text size, in pixels.
@@ -570,6 +588,24 @@ public class JustifiedTextView extends View {
             setTextSize(DimensionConverter.stringToDimension(textSizeDimen, getContext().getResources().getDisplayMetrics()));
         } else {
             throw new IllegalArgumentException("textSizeDimen cannot be null.");
+        }
+    }
+
+    /**
+     * Sets the text size based on a dimension stored as a complex value type and value.
+     *
+     * @param type The complex value type.
+     * @param textSize The dimension value.
+     *
+     * @throws IllegalArgumentException If {@code type} is not one of the {@link TypedValue} complex types, or if {@code textSize} is less than 0.
+     */
+    public void setTextSize(@IntRange(from = 0, to = 5) int type, @FloatRange(from = 0) float textSize){
+        if (type < 0 || type > 5) {
+            throw new IllegalArgumentException("type must be one of the TypedValue complex types.");
+        } else if (textSize < 0 ) {
+            throw new IllegalArgumentException("textSize must be at least 0.");
+        } else {
+            setTextSize(TypedValue.applyDimension(type, textSize, getContext().getResources().getDisplayMetrics()));
         }
     }
 
