@@ -37,7 +37,7 @@
             android:padding="8dp"
             android:text="@string/sample_text"
             android:textSize="14sp"
-            android:lineSpacingMultiplier="1.0"
+            android:lineSpacingMultiplier="1.2"
             android:lineSpacingExtra="0dp"
             custom:minimumWordSpacing="0.0"
             custom:minimumWordSpacingBaseCharacter="n"

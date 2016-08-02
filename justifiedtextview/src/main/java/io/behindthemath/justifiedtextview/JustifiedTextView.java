@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
+import android.support.annotation.IntDef;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.Size;
@@ -52,10 +54,10 @@ public class JustifiedTextView extends View {
 
     /**
      * Number to multiply the text size by to get the line height.
-     * Must equal at least 1.0. Default value is 1.3f.
+     * Must equal at least 1.0. Default value is 1.15f.
      */
     @FloatRange(from = 1f)
-    private float mLineSpacingMultiplier = 1.3f;
+    private float mLineSpacingMultiplier = 1.15f;
 
     /**
      * Extra vertical space to add between lines.
@@ -208,7 +210,7 @@ public class JustifiedTextView extends View {
         mTextSize = typedArray.getDimension(R.styleable.JustifiedTextView_android_textSize, defaultTextSize);
         mTextColor = typedArray.getColor(R.styleable.JustifiedTextView_android_textColor, defaultTextColor);
 
-        mLineSpacingMultiplier = typedArray.getFloat(R.styleable.JustifiedTextView_android_lineSpacingMultiplier, 1.3f);
+        mLineSpacingMultiplier = typedArray.getFloat(R.styleable.JustifiedTextView_android_lineSpacingMultiplier, 1.15f);
         mLineSpacingExtra = typedArray.getDimension(R.styleable.JustifiedTextView_android_lineSpacingExtra, 0);
         mForceLastLineJustification = typedArray.getBoolean(R.styleable.JustifiedTextView_forceLastLineJustification, false);
 
@@ -241,7 +243,7 @@ public class JustifiedTextView extends View {
         /*
          * mLineSpacingMultiplier cannot be less than 1.0. If it is, set it to 1.0.
          */
-        if (mLineSpacingMultiplier > 1f) { mLineSpacingMultiplier = 1f; }
+        if (mLineSpacingMultiplier < 1f) { mLineSpacingMultiplier = 1f; }
         /*
          * Calculate the line height, based on the text size and line spacing.
          */
@@ -274,8 +276,8 @@ public class JustifiedTextView extends View {
          */
         mPaddingLeft = getPaddingLeft();
         mPaddingTop = getPaddingTop();
-        int rightPadding = getPaddingRight();
-        int bottomPadding = getPaddingBottom();
+        int paddingRight = getPaddingRight();
+        int paddingBottom = getPaddingBottom();
 
         /*
          * Calculate the width of the view. The height will be calculated later.
@@ -306,11 +308,11 @@ public class JustifiedTextView extends View {
                 /*
                  * Calculate the width of the line if this word is included.
                  */
-                proposedLineWidth = (float) mPaddingLeft + (float) rightPadding + totalWordWidth + wordWidth + (mMinimumWordSpacing * (float) proposedNumSpacesNeeded);
+                proposedLineWidth = (float) mPaddingLeft + (float) paddingRight + totalWordWidth + wordWidth + (mMinimumWordSpacing * (float) proposedNumSpacesNeeded);
                 /*
                  * Calculate the word spacing if this word is included on the current line.
                  */
-                proposedWordSpacing = (width - (float) mPaddingLeft - (float) rightPadding - totalWordWidth - wordWidth) / (float) proposedNumSpacesNeeded;
+                proposedWordSpacing = (width - (float) mPaddingLeft - (float) paddingRight - totalWordWidth - wordWidth) / (float) proposedNumSpacesNeeded;
                 /*
                  * If the new word will fit (i.e. the line is not too wide, and the word spacing is not too narrow):
                  */
@@ -385,7 +387,7 @@ public class JustifiedTextView extends View {
         /*
          * Once all the lines are calculated, calculate the required size of the view.
          */
-        height = (mLinesList.size() * mLineHeight + mPaddingTop + bottomPadding);
+        height = (mLinesList.size() * mLineHeight + mPaddingTop + paddingBottom);
         /*
          * If the required height is less than the minimum height, expand it.
          */
