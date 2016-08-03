@@ -571,6 +571,7 @@ public class JustifiedTextView extends View {
             mLineHeight = mTextSize * mLineSpacingMultiplier + mLineSpacingExtra;
             mTextPaint.setTextSize(mTextSize);
             invalidate();
+            requestLayout();
         } else {
             throw new IllegalArgumentException("textSize must be more than 0.");
         }
@@ -630,6 +631,7 @@ public class JustifiedTextView extends View {
             mLineSpacingExtra = lineSpacingExtra;
             mLineHeight = mTextSize * mLineSpacingMultiplier + mLineSpacingExtra;
             invalidate();
+            requestLayout();
         } else {
             throw new IllegalArgumentException("lineSpacingExtra cannot be less than 0.");
         }
@@ -680,6 +682,7 @@ public class JustifiedTextView extends View {
             mLineSpacingMultiplier = lineSpacingMultiplier;
             mLineHeight = mTextSize * mLineSpacingMultiplier + mLineSpacingExtra;
             invalidate();
+            requestLayout();
         } else {
             throw new IllegalArgumentException("lineSpacingMultiplier must be at least 1.0.");
         }
@@ -707,6 +710,7 @@ public class JustifiedTextView extends View {
             mMinimumWordSpacingBaseCharacter = null;
             mMinimumWordSpacingBasePercentage = 0;
             invalidate();
+            requestLayout();
         } else {
             throw new IllegalArgumentException("minimumWordSpacing must be at least 0.");
         }
@@ -735,6 +739,7 @@ public class JustifiedTextView extends View {
             mMinimumWordSpacingBasePercentage = minimumWordSpacingBasePercentage != 0 ? minimumWordSpacingBasePercentage : DEFAULT_WORD_SPACING_BASE_PERCENTAGE;
             mMinimumWordSpacing = mTextPaint.measureText(mMinimumWordSpacingBaseCharacter) * mMinimumWordSpacingBasePercentage;
             invalidate();
+            requestLayout();
         } else if (minimumWordSpacingBaseCharacter == null) {
             throw new IllegalArgumentException("minimumWordSpacingBaseCharacter cannot be null.");
         } else if (minimumWordSpacingBasePercentage < 0 || minimumWordSpacingBasePercentage > 1f) {
