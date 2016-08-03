@@ -815,7 +815,7 @@ public class JustifiedTextView extends View {
      *
      * @return The number of lines displayed in the view.
      */
-    public int getLineCount(){
+    public int getLinesCount(){
         return mLinesList.size();
     }
 
