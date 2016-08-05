@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2016 Behind The Math
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.behindthemath.justifiedtextview;
 
 import android.content.Context;
@@ -6,7 +22,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
-import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,10 +39,6 @@ import static android.graphics.Paint.ANTI_ALIAS_FLAG;
 /**
  * This class is a basic View that displays text, with full justification.
  * This is as opposed to {@link android.widget.TextView}, which supports only left- or right-justification using the <em>gravity</em> attribute.
- * <p>
- * &copy; 2016 BehindTheMath (<a href=behindthemath.io>behindthemath.io</a>).
- * <p>
- * License: <a href=http://www.apache.org/licenses/LICENSE-2.0.html>Apache License 2.0</a>
  */
 public class JustifiedTextView extends View {
     static final float DEFAULT_WORD_SPACING_BASE_PERCENTAGE = 0.8f;
@@ -113,14 +124,24 @@ public class JustifiedTextView extends View {
     private Line lineBuffer = new Line();
 
     /**
-     * The left padding in pixels.
+     * The left padding, in pixels.
      */
     private int mPaddingLeft;
 
     /**
-     * The top padding in pixels
+     * The top padding, in pixels
      */
     private int mPaddingTop;
+
+    /**
+     * The right padding, in pixels
+     */
+    private int mPaddingRight;
+
+    /**
+     * Denotes whether the text is RTL.
+     */
+    private boolean mRTL = false;
 
     /**
      * Bare minimum constructor to use when creating the view from code.
@@ -238,6 +259,9 @@ public class JustifiedTextView extends View {
                 mMinimumWordSpacing = mTextPaint.measureText(" ") * 0.8f;
             }
         }
+
+        mRTL = typedArray.getBoolean(R.styleable.JustifiedTextView_RTL, false);
+
         typedArray.recycle();
 
         /*
@@ -276,7 +300,7 @@ public class JustifiedTextView extends View {
          */
         mPaddingLeft = getPaddingLeft();
         mPaddingTop = getPaddingTop();
-        int paddingRight = getPaddingRight();
+        mPaddingRight = getPaddingRight();
         int paddingBottom = getPaddingBottom();
 
         /*
@@ -308,11 +332,11 @@ public class JustifiedTextView extends View {
                 /*
                  * Calculate the width of the line if this word is included.
                  */
-                proposedLineWidth = (float) mPaddingLeft + (float) paddingRight + totalWordWidth + wordWidth + (mMinimumWordSpacing * (float) proposedNumSpacesNeeded);
+                proposedLineWidth = (float) mPaddingLeft + (float) mPaddingRight + totalWordWidth + wordWidth + (mMinimumWordSpacing * (float) proposedNumSpacesNeeded);
                 /*
                  * Calculate the word spacing if this word is included on the current line.
                  */
-                proposedWordSpacing = (width - (float) mPaddingLeft - (float) paddingRight - totalWordWidth - wordWidth) / (float) proposedNumSpacesNeeded;
+                proposedWordSpacing = (width - (float) mPaddingLeft - (float) mPaddingRight - totalWordWidth - wordWidth) / (float) proposedNumSpacesNeeded;
                 /*
                  * If the new word will fit (i.e. the line is not too wide, and the word spacing is not too narrow):
                  */
@@ -433,19 +457,50 @@ public class JustifiedTextView extends View {
              */
             if (line.getWordCount() > 0) {
                 /*
-                 * Move x to the right to account for the left padding.
-                 * The right padding does not need to be explicitly accounted for, since the line width already accounts for it, and it will automatically be left blank.
+                 * If the text is RTL:
                  */
-                x = mPaddingLeft;
-                for (String word : line.getWords()) {
+                if (mRTL) {
                     /*
-                     * Draw each word on the canvas.
+                     * Move x to the left to account for the right padding.
+                     * The left padding does not need to be explicitly accounted for, since the line width already accounts for it, and it will automatically be left blank.
                      */
-                    canvas.drawText(word, x, y, mTextPaint);
+                    x = getWidth() - mPaddingRight;
                     /*
-                     * Move x over to the right the width of the word and the word spacing for this line.
+                     * Loop through each word on the line.
                      */
-                    x += mTextPaint.measureText(word) + line.getSpacing();
+                    for (String word : line.getWords()) {
+                        /*
+                         * Loop through each letter in the word.
+                         */
+                        for (int i = 0; i < word.length(); i++) {
+                            String s = word.substring(i, i + 1);
+                            /*
+                             * Move over to the right, the width of the letter.
+                             */
+                            x -= mTextPaint.measureText(s);
+                            /*
+                             * Draw the letter.
+                             */
+                            canvas.drawText(s, x, y, mTextPaint);
+                        }
+                        x -= line.getSpacing();
+                    }
+                } else {
+                    /*
+                     * Move x to the right to account for the left padding.
+                     * The right padding does not need to be explicitly accounted for, since the line width already accounts for it, and it will automatically be left blank.
+                     */
+                    x = mPaddingLeft;
+                    for (String word : line.getWords()) {
+                        /*
+                         * Draw each word on the canvas.
+                         */
+                        canvas.drawText(word, x, y, mTextPaint);
+                        /*
+                         * Move x over to the right the width of the word and the word spacing for this line.
+                         */
+                        x += mTextPaint.measureText(word) + line.getSpacing();
+                    }
                 }
             }
             /*
@@ -453,12 +508,6 @@ public class JustifiedTextView extends View {
              */
             y += mLineHeight;
         }
-/*
-        canvas.drawLine(0, 0, getWidth(), 0, mTextPaint);
-        canvas.drawLine(0, (float) mPaddingTop, getWidth(), (float) mPaddingTop, mTextPaint);
-        canvas.drawLine(0, (float) mPaddingTop + lineSpacingAbove, getWidth(), (float) mPaddingTop + lineSpacingAbove, mTextPaint);
-        canvas.drawLine(0, getHeight(), getWidth(), getHeight(), mTextPaint);
-*/
     }
 
     /**
@@ -786,6 +835,24 @@ public class JustifiedTextView extends View {
     public void setForceLastLineJustification(boolean forceLastLineJustification) {
         mForceLastLineJustification = forceLastLineJustification;
         invalidate();
+    }
+
+    /**
+     * Returns whether the text is RTL.
+     *
+     * @return Whether the text is RTL.
+     */
+    public boolean isRTL() {
+        return mRTL;
+    }
+
+    /**
+     * Sets whether the text is RTL.
+     *
+     * @param RTL A {@code boolean} representing whether the text is RTL.
+     */
+    public void setRTL(boolean RTL) {
+        mRTL = RTL;
     }
 
     /**
